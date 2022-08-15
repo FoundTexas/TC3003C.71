@@ -15,9 +15,9 @@ public class Clase2_1 : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        rotation.x += 2 * Time.deltaTime;
-        rotation.y += 2 * Time.deltaTime;
-        rotation.z += 2 * Time.deltaTime;
+        //rotation.x += 20 * Time.deltaTime;
+        rotation.y += 20 * Time.deltaTime;
+        //rotation.z += 20 * Time.deltaTime;
 
         Cubo.localRotation = Quaternion.Euler(rotation);
     }
