@@ -50,4 +50,19 @@ public class Transformaciones
         t[1, 1] = Mathf.Cos(rad);
         return t;
     }
+
+    public static Vector3[] Transform(Matrix4x4 m, Vector3[] vertices)
+    {
+        Vector3[] newVertices = new Vector3[vertices.Length];
+
+        for (int V = 0; V < vertices.Length; V++)
+        {
+            Vector3 vl = vertices[V];
+            Vector4 newV = new Vector4(vl.x, vl.y, vl.z, 1);
+            newV = m * newV;
+            newVertices[V] = newV;
+        }
+
+        return newVertices;
+    }
 }

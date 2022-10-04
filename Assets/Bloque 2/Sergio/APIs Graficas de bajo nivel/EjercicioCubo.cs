@@ -10,14 +10,11 @@ public class EjercicioCubo : MonoBehaviour
         //Considera Un cubo de lado 3.5 centrado en el origen
         //1. Encuentra las posiciones de sus 8 vertices
         cube();
-
-
-
     }
 
     void cube()
     {
-        Mesh mymesh = new Mesh();
+        float side = 3.5f;
         Vector3[] vertices = new Vector3[]
         {
             new Vector3(-1.75f, -1.75f, -1.75f),
@@ -31,17 +28,9 @@ public class EjercicioCubo : MonoBehaviour
             new Vector3(1.75f, 1.75f, 1.75f),
         };
 
-        mymesh.vertices = vertices;
-        int[] tris = new int[] {
-            1, 0, 4,
-            5, 1, 4
-
-
-        };
-        mymesh.triangles = tris;
-        MeshFilter mf = gameObject.AddComponent<MeshFilter>();
-        mf.mesh = mymesh;
-        MeshRenderer mr = gameObject.AddComponent<MeshRenderer>();
+        Matrix4x4 rz = Transformaciones.RotateZ(-15.03f);
+        Matrix4x4 tz = Transformaciones.translate(0, 0, 12.77f);
+        Matrix4x4 ry = Transformaciones.RotateY(2.48f);
     }
 
     // Update is called once per frame
