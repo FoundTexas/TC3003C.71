@@ -1,21 +1,18 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Megazord : MonoBehaviour
 {
-    enum PARTS
-    {
-        RP_HEAP, RP_TORSO, RP_CHEST, RP_NECK, PR_HEAD
-    }
+    [SerializeField] Pieza Root;
+
     List<GameObject> go_parts = new List<GameObject>();
     List<Matrix4x4> m_locations = new List<Matrix4x4>();
     List<Matrix4x4> m_scales = new List<Matrix4x4>();
     List<Matrix4x4> m_rotations = new List<Matrix4x4>();
     Vector3[] v3_originales;
 
-    [SerializeField]
-    PARTS parts = PARTS.RP_HEAP;
 
     float RotY = 0;
     float detaY = 0.1f;
@@ -24,6 +21,10 @@ public class Megazord : MonoBehaviour
 
     void Start()
     {
+        Root.Set();
+        Root.SetPieza();
+
+        /*
         //HEAP
         go_parts.Add(GameObject.CreatePrimitive(PrimitiveType.Cube));
         v3_originales = go_parts[0].GetComponent<MeshFilter>().mesh.vertices;
@@ -62,10 +63,12 @@ public class Megazord : MonoBehaviour
         m_rotations.Add(Transformaciones.RotateY(0));
 
         //Shoulder 
-        /*go_parts.Add(GameObject.CreatePrimitive(PrimitiveType.Cube));
-        m_scales.Add(Transformaciones.scale(0.15f, 0.15f, 0.15f));
+        go_parts.Add(GameObject.CreatePrimitive(PrimitiveType.Cube));
+        go_parts[1].name = "Shoulder";
+        m_scales.Add(Transformaciones.scale(1, 0.75f, 1));
         m_locations.Add(Transformaciones.translate(0, 0.5f / 2 + 0.75f / 2, 0));
-        m_rotations.Add(Transformaciones.RotateY(0));*/
+        m_rotations.Add(Transformaciones.RotateY(45));
+        */
     }
 
     // Update is called once per frame
@@ -79,7 +82,7 @@ public class Megazord : MonoBehaviour
         {
             if (i == 1)
             {
-                m_rotations[i] = Transformaciones.RotateX(RotY);
+                m_rotations[i] = Transformaciones.RotateY(RotY);
             }
 
             Matrix4x4 m = account * m_locations[i] * m_rotations[i] * m_scales[i];
