@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657874, g: 0.49641258, b: 0.5748172, a: 1}
+  m_IndirectSpecularColor: {r: 0.3731193, g: 0.38073996, b: 0.35872698, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -174,7 +174,7 @@ Camera:
     height: 1
   near clip plane: 1
   far clip plane: 20
-  field of view: 65
+  field of view: 64
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -223,7 +223,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!108 &418501435
 Light:
   m_ObjectHideFlags: 0
@@ -391,14 +391,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 510667042}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.18, y: 0, z: 3.37}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalRotation: {x: -0.65651345, y: 0.26265976, z: 0.26265976, w: 0.65651345}
+  m_LocalPosition: {x: 5.23, y: -1.3, z: 7.31}
+  m_LocalScale: {x: 1.6933, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 43.611}
 --- !u!1 &2009960285
 GameObject:
   m_ObjectHideFlags: 0
@@ -428,21 +428,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a1e112b66ded364bacd83d30005f844, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  esferas:
+  - SC: {x: 0, y: 0, z: 0}
+    ka: {x: 0, y: 0, z: 0}
+    kd: {x: 0, y: 0, z: 0}
+    ks: {x: 0, y: 0, z: 0}
+    SR: 0
+    ALPHA: 0
   renderer: {fileID: 510667044}
   background: {fileID: 2800000, guid: 83a22ff5d6dac6a42bee117814bdd982, type: 3}
-  ka: {x: 0.12, y: 0.12, z: 0.12}
-  kd: {x: 1, y: 1, z: 0}
-  ks: {x: 0.8, y: 0.8, z: 0}
   Ia: {x: 1, y: 1, z: 1}
   Id: {x: 1, y: 1, z: 1}
   Is: {x: 1, y: 1, z: 1}
-  PoI: {x: 0.8, y: 0.55, z: 0.79}
-  n: {x: 0, y: 1.2, z: 0}
-  LIGHT: {x: 8.7, y: 3.2, z: -1.1}
+  LIGHT: {x: -8.16, y: 3.2, z: -1.1}
   CAMERA: {x: -5.6, y: 4, z: 2.5}
-  ALPHA: 0.75
-  SR: 1.25
-  SC: {x: 0.5, y: 0, z: 0.79}
   contact: {x: 0, y: 0, z: 1}
   CameraResolution: {x: 640, y: 480}
 --- !u!4 &2009960287
