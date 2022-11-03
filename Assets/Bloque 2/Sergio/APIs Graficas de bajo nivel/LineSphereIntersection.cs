@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Linq;
 
 [System.Serializable]
 public class Sphere
@@ -10,19 +11,46 @@ public class Sphere
     public Vector3 ka, kd, ks;
     public float SR;
     public float ALPHA;
+
+    public Sphere(Vector3 SC, Vector3 kd, float SR, float ALPHA)
+    {
+        this.SC = SC;
+        this.kd = kd;
+        ka = kd / 5f;
+        ks = kd / 3f;
+        this.SR = SR;
+        this.ALPHA = ALPHA;
+
+        GameObject sph = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+        sph.transform.position = SC;
+        sph.transform.localScale = new Vector3(SR * 2f, SR * 2f, SR * 2f);
+        Renderer rend = sph.GetComponent<Renderer>();
+        rend.material.shader = Shader.Find("Standard");
+        rend.material.SetColor("_Color", new Color(kd.x, kd.y, kd.z));
+        rend.material.SetColor("_SpecColor", new Color(ks.x, ks.y, ks.z));
+
+    }
+
+
 }
 public class LineSphereIntersection : MonoBehaviour
 {
-    public Sphere[] esferas;
+    public List<Sphere> esferas = new List<Sphere>();
     new public Renderer renderer;
     public Texture2D background;
+    public Texture2D output;
     public Vector3 Ia;
     public Vector3 Id;
     public Vector3 Is;
+    public Vector3 maxkd, minkd;
+    public Vector3 maxSC, minSC;
+    public Vector2 alphaval;
+    public Vector2 radioval;
+
+    public int esferasNum = 20;
+
     public Vector3 LIGHT;
     public Vector3 CAMERA;
-
-    public Vector3 contact;
 
     private Camera mainCam;
     public Vector2 CameraResolution;
@@ -34,18 +62,8 @@ public class LineSphereIntersection : MonoBehaviour
     void Start()
     {
         mainCam = Camera.main;
-        //Vector3 i = Illumination(PoI);
-
-        // Create sphere
-        GameObject sph = GameObject.CreatePrimitive(PrimitiveType.Sphere);
-        sph.transform.position = esferas[0].SC;
-        sph.transform.localScale = new Vector3(esferas[0].SR * 2f, esferas[0].SR * 2f, esferas[0].SR * 2f);
-        Renderer rend = sph.GetComponent<Renderer>();
-        rend.material.shader = Shader.Find("Specular");
-        rend.material.SetColor("_Color", new Color(esferas[0].kd.x, esferas[0].kd.y, esferas[0].kd.z));
-        rend.material.SetColor("_SpecColor", new Color(esferas[0].ks.x, esferas[0].ks.y, esferas[0].ks.z));
         mainCam.transform.position = CAMERA;
-        mainCam.transform.LookAt(esferas[0].SC);
+        //mainCam.transform.LookAt(esferas[0].SC);
 
         // Create pointLight
         GameObject pointLight = new GameObject("ThePointLight");
@@ -55,28 +73,40 @@ public class LineSphereIntersection : MonoBehaviour
         lightComp.intensity = 20;
         lightComp.transform.position = LIGHT;
 
+        for (int i = 0; i < esferasNum; i++)
+        {
+            Sphere sp = new Sphere(
+                new Vector3(
+                    Random.Range(maxSC.x, minSC.x),
+                    Random.Range(maxSC.y, minSC.y),
+                    Random.Range(maxSC.z, minSC.z)),
+                new Vector3(
+                    Random.Range(maxkd.x, minkd.x),
+                    Random.Range(maxkd.y, minkd.y),
+                    Random.Range(maxkd.z, minkd.z)),
+                Random.Range(radioval.x, radioval.y),
+                Random.Range(alphaval.x, alphaval.y)
+            );
+
+            esferas.Add(sp);
+        }
+
+        esferas.Sort((x, y) => x.SC.z.CompareTo(y.SC.z));
 
         frusttumHeight = 2.0f * mainCam.nearClipPlane * Mathf.Tan(mainCam.fieldOfView * Mathf.Deg2Rad);
         frustumWidth = frusttumHeight * mainCam.aspect;
         pixelHeight = frusttumHeight / CameraResolution.y;
         pixelWidth = frustumWidth / CameraResolution.x;
 
-        var texture = new Texture2D(Mathf.RoundToInt(CameraResolution.x), Mathf.RoundToInt(CameraResolution.y), TextureFormat.ARGB32, false);
+        var texture = new Texture2D(Mathf.RoundToInt(background.width), Mathf.RoundToInt(background.height), TextureFormat.ARGB32, false);
 
         for (int x = 0; x < CameraResolution.x; x++)
         {
             for (int y = 0; y < CameraResolution.y; y++)
             {
-                Color bg = background.GetPixelBilinear(x, y);
+                Color bg = background.GetPixelBilinear(x/CameraResolution.x, y/CameraResolution.y);
                 texture.SetPixel(x, y, bg);
-            }
-        }
-        texture.Apply();
 
-        for (int x = 0; x < CameraResolution.x; x++)
-        {
-            for (int y = 0; y < CameraResolution.y; y++)
-            {
                 Color color = GetPixel(new Vector3(x, y, 0f));
                 if (color != Color.clear)
                 {
@@ -84,8 +114,11 @@ public class LineSphereIntersection : MonoBehaviour
                 }
             }
         }
+
         texture.Apply();
         renderer.material.mainTexture = texture;
+
+        SaveTexture(texture);
     }
 
     // Update is called once per frame
@@ -130,9 +163,10 @@ public class LineSphereIntersection : MonoBehaviour
 
         Vector3 center = Cast(coords);
 
-        foreach (var item in esferas)
+        Vector3 u = (center - CAMERA).normalized;
+
+        foreach (Sphere item in esferas)
         {
-            Vector3 u = (center - CAMERA).normalized;
             Vector3 oc = CAMERA - item.SC;
 
             float nabla = (Vector3.Dot(u.normalized, oc) * Vector3.Dot(u.normalized, oc) - (oc.magnitude * oc.magnitude - item.SR * item.SR));
@@ -170,9 +204,13 @@ public class LineSphereIntersection : MonoBehaviour
         Vector3 lo = l - lp;
         Vector3 r = lp - lo;
         D *= dotNuLu;
-        float dotvuru = Vector3.Dot(v.normalized, r.normalized);
-        float w = Mathf.Pow(dotvuru, sphere.ALPHA);
-        S *= w == float.NaN? 0 : w;
+        float dotVuRu = Vector3.Dot(v.normalized, r.normalized);
+        float w = Mathf.Pow(dotVuRu, sphere.ALPHA);
+        if(w is float.NaN)
+        {
+            w = 0f;
+        }
+        S *= w;
         return A + D + S;
     }
 
@@ -191,5 +229,20 @@ public class LineSphereIntersection : MonoBehaviour
         p -= mainCam.transform.right * frustumWidth / 2.0f;
         return p;
 
+    }
+
+    private void SaveTexture(Texture2D texture)
+    {
+        byte[] bytes = texture.EncodeToPNG();
+        var dirPath = Application.dataPath + "/RenderOutput";
+        if (!System.IO.Directory.Exists(dirPath))
+        {
+            System.IO.Directory.CreateDirectory(dirPath);
+        }
+        System.IO.File.WriteAllBytes(dirPath + "/R_" + Random.Range(0, 100000) + ".png", bytes);
+        Debug.Log(bytes.Length / 1024 + "Kb was saved as: " + dirPath);
+#if UNITY_EDITOR
+        UnityEditor.AssetDatabase.Refresh();
+#endif
     }
 }

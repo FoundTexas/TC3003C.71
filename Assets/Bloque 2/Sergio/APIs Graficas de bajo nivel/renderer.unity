@@ -354,7 +354,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: ad6f7257a0967b247b9ea04b5385aac5, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -391,14 +391,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 510667042}
-  m_LocalRotation: {x: -0.65651345, y: 0.26265976, z: 0.26265976, w: 0.65651345}
-  m_LocalPosition: {x: 5.23, y: -1.3, z: 7.31}
-  m_LocalScale: {x: 1.6933, y: 1, z: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 43.611}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2009960285
 GameObject:
   m_ObjectHideFlags: 0
@@ -428,21 +428,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a1e112b66ded364bacd83d30005f844, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  esferas:
-  - SC: {x: 0, y: 0, z: 0}
-    ka: {x: 0, y: 0, z: 0}
-    kd: {x: 0, y: 0, z: 0}
-    ks: {x: 0, y: 0, z: 0}
-    SR: 0
-    ALPHA: 0
+  esferas: []
   renderer: {fileID: 510667044}
-  background: {fileID: 2800000, guid: 83a22ff5d6dac6a42bee117814bdd982, type: 3}
-  Ia: {x: 1, y: 1, z: 1}
-  Id: {x: 1, y: 1, z: 1}
+  background: {fileID: 2800000, guid: dff1b3f99114eaa4680f8f5e685079f2, type: 3}
+  output: {fileID: 0}
+  Ia: {x: 0.7, y: 0.7, z: 0.7}
+  Id: {x: 0.8, y: 0.8, z: 1}
   Is: {x: 1, y: 1, z: 1}
-  LIGHT: {x: -8.16, y: 3.2, z: -1.1}
-  CAMERA: {x: -5.6, y: 4, z: 2.5}
-  contact: {x: 0, y: 0, z: 1}
+  maxkd: {x: 1, y: 1, z: 1}
+  minkd: {x: 0.5, y: 0.5, z: 0.5}
+  maxSC: {x: 2, y: 6, z: 10}
+  minSC: {x: -2, y: 2, z: 8}
+  alphaval: {x: 500, y: 600}
+  radioval: {x: 0.1, y: 0.35}
+  esferasNum: 20
+  LIGHT: {x: 0, y: 7.5, z: 3}
+  CAMERA: {x: 0, y: 4, z: 5.5}
   CameraResolution: {x: 640, y: 480}
 --- !u!4 &2009960287
 Transform:
