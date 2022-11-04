@@ -1,3 +1,6 @@
+// Rodolfo León Gasca
+// Luis Gerardo Reyes Lozano
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -33,12 +36,11 @@ public class Sphere
 
 
 }
-public class LineSphereIntersection : MonoBehaviour
+public class RayCaster : MonoBehaviour
 {
     public List<Sphere> esferas = new List<Sphere>();
     new public Renderer renderer;
     public Texture2D background;
-    public Texture2D output;
     public Vector3 Ia;
     public Vector3 Id;
     public Vector3 Is;
@@ -239,7 +241,7 @@ public class LineSphereIntersection : MonoBehaviour
         {
             System.IO.Directory.CreateDirectory(dirPath);
         }
-        System.IO.File.WriteAllBytes(dirPath + "/R_" + Random.Range(0, 100000) + ".png", bytes);
+        System.IO.File.WriteAllBytes(dirPath + "/render" + ".png", bytes);
         Debug.Log(bytes.Length / 1024 + "Kb was saved as: " + dirPath);
 #if UNITY_EDITOR
         UnityEditor.AssetDatabase.Refresh();
