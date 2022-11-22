@@ -22,7 +22,7 @@ public class Megazord : MonoBehaviour
     void Start()
     {
         Root.Set();
-        Root.SetPieza();
+        //Root.SetPieza();
 
         /*
         //HEAP
@@ -72,6 +72,9 @@ public class Megazord : MonoBehaviour
     }
 
     // Update is called once per frame
+    private void FixedUpdate() {
+        Root.SetPieza();
+    }
     void Update()
     {
         RotY += detaY * dirY;
@@ -82,7 +85,7 @@ public class Megazord : MonoBehaviour
         {
             if (i == 1)
             {
-                m_rotations[i] = Transformaciones.RotateY(RotY);
+                m_rotations[i] = Transformaciones.RotateZ(RotY);
             }
 
             Matrix4x4 m = account * m_locations[i] * m_rotations[i] * m_scales[i];
